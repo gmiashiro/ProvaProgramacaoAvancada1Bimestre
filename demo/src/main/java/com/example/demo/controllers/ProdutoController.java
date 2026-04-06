@@ -10,10 +10,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
-@RequestMapping(name = "/produto")
+@RequestMapping(path = "/produto")
 public class ProdutoController {
 
     @Autowired
@@ -26,8 +25,9 @@ public class ProdutoController {
     }
 
     @GetMapping("/{id}")
-    public Optional<ProdutoModel> findById(@PathVariable Long id){
-        return produtoService.findById(id);
+    public ResponseEntity<ProdutoModel> findById(@PathVariable Long id){
+        ProdutoModel requeste = produtoService.findById(id).get();
+        return ResponseEntity.ok().body(requeste);
     }
 
     @PostMapping
@@ -35,7 +35,7 @@ public class ProdutoController {
         ProdutoModel requeste = produtoService.criarProduto(produtoModel);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri()
                 .path("/{id}")
-                .buildAndExpand(requeste.getId())
+                .buildAndExpand(produtoModel.getId())
                 .toUri();
         return  ResponseEntity.created(uri).body(requeste);
     }
