@@ -47,7 +47,8 @@ public class ProdutoController {
     }
 
     @PutMapping("{id}")
-    public ProdutoModel atualizar(@PathVariable Long id, @RequestBody ProdutoModel produtoModel){
-        return produtoService.atualizarProduto(id, produtoModel);
+    public ResponseEntity<ProdutoModel> atualizar(@PathVariable Long id, @RequestBody ProdutoModel produtoModel){
+        ProdutoModel requeste = produtoService.atualizarProduto(id, produtoModel);
+        return ResponseEntity.ok().body(requeste);
     }
 }
